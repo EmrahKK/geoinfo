@@ -1,0 +1,22 @@
+{
+  "name": "geoinfo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "geoinfo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --watch app --watch config --watch public geoinfo.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "morgan": "^1.7.0",
+    "multer": "^1.2.1",
+    "underscore": "^1.8.3"
+  }
+}
