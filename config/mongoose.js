@@ -5,6 +5,6 @@ mongoose.Promise = global.Promise;
     
 module.exports = function () {
     var db = mongoose.connect(config.db);
-    //require('../app/model/libraUserModel');    	
+    require('../app/model/geobjectModel');    	
     return db;
 };

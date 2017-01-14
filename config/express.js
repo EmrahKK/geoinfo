@@ -23,6 +23,7 @@ module.exports = function () {
     //app.all('/geoinfo/v1/*', [require('../app/middleware/jwtAuthenticate')]);
     //ROUTES
     require('../app/route/indexRoute.js')(app);
+    require('../app/route/geobjectRoute')(app);
     // STATIC
     app.use('/geoinfo/static', express.static(__dirname + '/../public'));
     app.use('/geoinfo/view', express.static(__dirname + '/../view'));
