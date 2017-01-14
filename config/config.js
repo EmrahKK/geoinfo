@@ -1,4 +1,4 @@
-var appdb = 'mongodb://librausr:H679f#dfh54sh6@mongodb.ibb.gov.tr:27017/geoinfo';
+var appdb = 'mongodb://localhost/geoinfo';
 
 if (process.env.NODE_ENV) 
     appdb = 'mongodb://localhost/geoinfo';
