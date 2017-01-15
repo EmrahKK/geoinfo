@@ -45,16 +45,33 @@ exports.near = function (req, res) {
         var lat = parseFloat(req.query.lat);
         var lon = parseFloat(req.query.lon);
         var maxDistance = parseFloat(req.query.maxDistance);
+        var tags = [];
+
+        if (Array.isArray(req.query.tags)) {
+            tags = req.query.tags;
+        } else {
+            tags = [req.query.tags];
+        }
 
         var point = {
             type: "Point",
             coordinates: [lon, lat]
         };
+
         var geoOptions = {
             spherical: true,
             maxDistance: maxDistance,
             num: 10
         };
+        if (req.query.tags) {
+            geoOptions.query = {
+                tags: {
+                    $in: tags
+                }
+            }
+        }
+        
+        console.log("geoOptions " + req.query.tags);
 
         Geobject.geoNear(point, geoOptions, function (err, results, stats) {
             if (err) {
