@@ -2,7 +2,7 @@ var Geobject = require('mongoose').model('geobject');
 
 exports.list = function (req, res) {
     var page = 0;
-    if (!isNaN(req.query.page)) 
+    if (!isNaN(req.query.page))
         page = req.query.page;
     Geobject
         .find()
@@ -16,7 +16,7 @@ exports.list = function (req, res) {
             } else {
                 return res
                     .status(400)
-                    .json({"message": "Operation fail.", "error": err});
+                    .json({ "message": "Operation fail.", "error": err });
             }
         });
 }
@@ -27,7 +27,7 @@ exports.create = function (req, res) {
         if (err) {
             return res
                 .status(400)
-                .json({"message": "Operation fail.", "error": err});
+                .json({ "message": "Operation fail.", "error": err });
         } else {
             return res
                 .status(200)
@@ -40,7 +40,7 @@ exports.near = function (req, res) {
     if (isNaN(req.query.lat) || isNaN(req.query.lon) || isNaN(req.query.maxDistance)) {
         return res
             .status(404)
-            .json({"message": "lat, lon and maxDistance parameters required!"});
+            .json({ "message": "lat, lon and maxDistance parameters required!" });
     } else {
         var lat = parseFloat(req.query.lat);
         var lon = parseFloat(req.query.lon);
@@ -70,14 +70,13 @@ exports.near = function (req, res) {
                 }
             }
         }
-        
-        console.log("geoOptions " + req.query.tags);
+        //console.log("geoOptions " + req.query.tags);
 
         Geobject.geoNear(point, geoOptions, function (err, results, stats) {
             if (err) {
                 return res
                     .status(400)
-                    .json({"message": "Operation fail.", "error": err});
+                    .json({ "message": "Operation fail.", "error": err });
             } else {
                 return res
                     .status(200)
