@@ -2,7 +2,7 @@ var Geobject = require('mongoose').model('geobject');
 
 exports.list = function (req, res) {
     var page = 0;
-    if (!isNaN(req.query.page))
+    if (!isNaN(req.query.page)) 
         page = req.query.page;
     Geobject
         .find()
@@ -16,7 +16,7 @@ exports.list = function (req, res) {
             } else {
                 return res
                     .status(400)
-                    .json({ "message": "Operation fail.", "error": err });
+                    .json({"message": "Operation fail.", "error": err});
             }
         });
 }
@@ -27,7 +27,7 @@ exports.create = function (req, res) {
         if (err) {
             return res
                 .status(400)
-                .json({ "message": "Operation fail.", "error": err });
+                .json({"message": "Operation fail.", "error": err});
         } else {
             return res
                 .status(200)
@@ -40,7 +40,7 @@ exports.near = function (req, res) {
     if (isNaN(req.query.lat) || isNaN(req.query.lon) || isNaN(req.query.maxDistance)) {
         return res
             .status(404)
-            .json({ "message": "lat, lon and maxDistance parameters required!" });
+            .json({"message": "lat, lon and maxDistance parameters required!"});
     } else {
         var lat = parseFloat(req.query.lat);
         var lon = parseFloat(req.query.lon);
@@ -72,16 +72,73 @@ exports.near = function (req, res) {
         }
         //console.log("geoOptions " + req.query.tags);
 
-        Geobject.geoNear(point, geoOptions, function (err, results, stats) {
+        Geobject
+            .geoNear(point, geoOptions, function (err, results, stats) {
+                if (err) {
+                    return res
+                        .status(400)
+                        .json({"message": "Operation fail.", "error": err});
+                } else {
+                    return res
+                        .status(200)
+                        .json(results);
+                }
+            });
+    }
+}
+
+exports.delete = function (req, res) {
+    //console.log(req.params.objectId);
+    let objecId = req.params.objectId;
+
+    if (!objecId) {
+        return res
+            .status(404)
+            .json({"message": "ObjectId must be required..."});
+    }
+
+    Geobject
+        .remove({
+            _id: objecId
+        }, function (err) {
             if (err) {
                 return res
                     .status(400)
-                    .json({ "message": "Operation fail.", "error": err });
+                    .json({"message": "Operation fail.", "error": err});
             } else {
-                return res
-                    .status(200)
-                    .json(results);
+                // removed!
+                return res.json({"message": "Operation succesfull."})
             }
         });
+}
+
+exports.get = function (req, res) {
+    let objecId = req.params.objectId;
+
+    if (!objecId) {
+        return res
+            .status(404)
+            .json({"message": "ObjectId must be required..."});
     }
+
+    Geobject
+        .findOne({_id: objecId})
+        .exec(function (err, geobject) {
+            if (!err) {
+                if (geobject) {
+                    return res
+                        .status(200)
+                        .json(geobject);
+                } else {
+                    return res
+                        .status(404)
+                        .json({"message": "Geobject not found.", objecId});
+                }
+
+            } else {
+                return res
+                    .status(400)
+                    .json({"message": "Operation fail.", "error": err});
+            }
+        });
 }
