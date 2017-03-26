@@ -142,3 +142,41 @@ exports.get = function (req, res) {
             }
         });
 }
+
+exports.update = function (req, res) {
+    let objecId = req.params.objectId;
+
+    if (!objecId) {
+        return res
+            .status(404)
+            .json({"message": "ObjectId must be required..."});
+    }
+
+    Geobject
+        .findOneAndUpdate({
+            _id: objecId
+        }, req.body, {
+            new: true,
+            upsert: true
+        }, function (err, geobject) {
+            if (err) {
+                return res
+                    .status(400)
+                    .json({"message": "Operation fail.", "error": err});
+            } else {
+                res.json(geobject);
+            }
+        });
+}
+
+exports.checkObjectIdMiddleware = function (req, res, next) {
+    let objecId = req.params.objectId;
+
+    if (!objecId) {
+        return res
+            .status(404)
+            .json({"message": "ObjectId must be required..."});
+    } else {
+        next();
+    }
+}

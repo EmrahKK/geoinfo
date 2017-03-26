@@ -26,4 +26,8 @@ Content-Type: application/json
 }
 
 ### delete geobject
-DELETE http://localhost:3017/geoinfo/v1/geobject/587a4171cb278908b72720b6
+DELETE http://localhost:3017/geoinfo/v1/geobject/587a443ccb278908b72720ba
+
+### get geobject
+
+GET http://localhost:3017/geoinfo/v1/geobject/587a443ccb278908b72720ba
