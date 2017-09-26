@@ -2,7 +2,7 @@ var Geobject = require('mongoose').model('geobject');
 
 exports.list = function (req, res) {
     var page = 0;
-    if (!isNaN(req.query.page)) 
+    if (!isNaN(req.query.page))
         page = req.query.page;
     Geobject
         .find()
@@ -16,7 +16,7 @@ exports.list = function (req, res) {
             } else {
                 return res
                     .status(400)
-                    .json({"message": "Operation fail.", "error": err});
+                    .json({ "message": "Operation fail.", "error": err });
             }
         });
 }
@@ -27,7 +27,7 @@ exports.create = function (req, res) {
         if (err) {
             return res
                 .status(400)
-                .json({"message": "Operation fail.", "error": err});
+                .json({ "message": "Operation fail.", "error": err });
         } else {
             return res
                 .status(200)
@@ -40,7 +40,7 @@ exports.near = function (req, res) {
     if (isNaN(req.query.lat) || isNaN(req.query.lon) || isNaN(req.query.maxDistance)) {
         return res
             .status(404)
-            .json({"message": "lat, lon and maxDistance parameters required!"});
+            .json({ "message": "lat, lon and maxDistance parameters required!" });
     } else {
         var lat = parseFloat(req.query.lat);
         var lon = parseFloat(req.query.lon);
@@ -77,7 +77,7 @@ exports.near = function (req, res) {
                 if (err) {
                     return res
                         .status(400)
-                        .json({"message": "Operation fail.", "error": err});
+                        .json({ "message": "Operation fail.", "error": err });
                 } else {
                     return res
                         .status(200)
@@ -88,41 +88,24 @@ exports.near = function (req, res) {
 }
 
 exports.delete = function (req, res) {
-    //console.log(req.params.objectId);
-    let objecId = req.params.objectId;
-
-    if (!objecId) {
-        return res
-            .status(404)
-            .json({"message": "ObjectId must be required..."});
-    }
-
     Geobject
         .remove({
-            _id: objecId
+            _id: req.objecId
         }, function (err) {
             if (err) {
                 return res
                     .status(400)
-                    .json({"message": "Operation fail.", "error": err});
+                    .json({ "message": "Operation fail.", "error": err });
             } else {
                 // removed!
-                return res.json({"message": "Operation succesfull."})
+                return res.json({ "message": "Operation succesfull." })
             }
         });
 }
 
 exports.get = function (req, res) {
-    let objecId = req.params.objectId;
-
-    if (!objecId) {
-        return res
-            .status(404)
-            .json({"message": "ObjectId must be required..."});
-    }
-
     Geobject
-        .findOne({_id: objecId})
+        .findOne({ _id: req.objecId })
         .exec(function (err, geobject) {
             if (!err) {
                 if (geobject) {
@@ -132,29 +115,21 @@ exports.get = function (req, res) {
                 } else {
                     return res
                         .status(404)
-                        .json({"message": "Geobject not found.", objecId});
+                        .json({ "message": "Geobject not found." });
                 }
 
             } else {
                 return res
                     .status(400)
-                    .json({"message": "Operation fail.", "error": err});
+                    .json({ "message": "Operation fail.", "error": err });
             }
         });
 }
 
 exports.update = function (req, res) {
-    let objecId = req.params.objectId;
-
-    if (!objecId) {
-        return res
-            .status(404)
-            .json({"message": "ObjectId must be required..."});
-    }
-
     Geobject
         .findOneAndUpdate({
-            _id: objecId
+            _id: req.objecId
         }, req.body, {
             new: true,
             upsert: true
@@ -162,7 +137,7 @@ exports.update = function (req, res) {
             if (err) {
                 return res
                     .status(400)
-                    .json({"message": "Operation fail.", "error": err});
+                    .json({ "message": "Operation fail.", "error": err });
             } else {
                 res.json(geobject);
             }
@@ -175,8 +150,9 @@ exports.checkObjectIdMiddleware = function (req, res, next) {
     if (!objecId) {
         return res
             .status(404)
-            .json({"message": "ObjectId must be required..."});
+            .json({ "message": "ObjectId must be required..." });
     } else {
+        req.objecId = objecId;
         next();
     }
 }

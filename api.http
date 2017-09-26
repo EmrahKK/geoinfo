@@ -12,7 +12,7 @@ Content-Type: application/json
     "data": {
         "test": "test",
         "numbertest": 123
-    },        
+    },
     "tags": [
         "Building"
     ],
@@ -26,8 +26,7 @@ Content-Type: application/json
 }
 
 ### delete geobject
-DELETE http://localhost:3017/geoinfo/v1/geobject/587a443ccb278908b72720ba
+DELETE http://localhost:3017/geoinfo/v1/geobject/587dae158ab7c0cd6e487c18
 
 ### get geobject
-
-GET http://localhost:3017/geoinfo/v1/geobject/587a443ccb278908b72720ba
+GET http://localhost:3017/geoinfo/v1/geobject/58da5b4f750503a87dda328f
